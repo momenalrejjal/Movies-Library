@@ -16,3 +16,8 @@ movies-library  a movie app that can check the latest movies based on categories
 ## project features
 1. check the latest movies 
 2. showing it on categories.
+3. showing the trending movies.
+4. you can search about what the movie do you want.
+5. showing tv programs.
+6. showing the reviews about movies.
+
