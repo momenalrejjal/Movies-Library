@@ -6,8 +6,14 @@ const axios = require("axios");
 const dotenv = require('dotenv');
 dotenv.config();
 const APIKEY = process.env.APIKEY;
+const PORT = process.env.PORT;
+const pg = require("pg");
+const bodyParser = require("body-parser");
+const jsonParser = bodyParser.json()
+const DATABASE_URL = process.env.DATABASE_URL;
+const client = new pg.client(DATABASE_URL);
 
-app.use(errorHandler);
+//app.use(errorHandler);
 app.get('/HomePage', movieHandler);
 
 app.get('/FavoritePage', favHandler);
@@ -20,6 +26,11 @@ app.get('/TV', tvHandler);
 
 app.get('/reviews', reviewsHandler);
 
+app.post("/addmovieslibrary",jsonParser ,addmovieslibraryHandler);
+
+app.get("/getAllMovies", getAllMoviesHan);
+
+app.use(express.json());
 function Movie(id, title, release_date, poster_path, overview){
     this.id = id;
     this.title = title;
@@ -87,10 +98,28 @@ function reviewsHandler(req, res){
     })
 }
 
+function addmovieslibraryHandler(req,res){
+    let movie = req.body
+    const sql = `INSERT INTO movieslibrary(tital, release_date, overview, poster_path) VALUES ($1, $2, $3, $4) RETURNING * ;`
+    let VALUES = [movie.title, movie.release_date, movie.overview, movie.poster_path]
+client.query(sql, values).then(() =>{
+    return res.status(201).send("Successful");
+})
+}
+
+function getAllMoviesHan(req, res){
+    const sql = `SELECT * FROM movieslibrary`;
+    clearInterval.query(sql).then(data => {
+        return res.status(200).json(data.rows);
+    }) 
+}
+
+client.connect().then(() =>
+
 app.listen(3000, () => {
     console.log('I am using port 3000');
 })
-
+);
 
 
 
