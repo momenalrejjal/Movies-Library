@@ -7,7 +7,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 const APIKEY = process.env.APIKEY;
 
-app.use(errorHandler);
+const pg = require("pg");
+
+//app.use(errorHandler);
 app.get('/HomePage', movieHandler);
 
 app.get('/FavoritePage', favHandler);
