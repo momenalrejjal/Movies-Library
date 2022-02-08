@@ -30,6 +30,9 @@ app.post("/addmovieslibrary",jsonParser ,addmovieslibraryHandler);
 
 app.get("/getAllMovies", getAllMoviesHan);
 
+app.get("/updatemovie/:id", updatemovieHandler);
+app.get("/deletemovie/id", deletemovieHandler);
+
 app.use(express.json());
 function Movie(id, title, release_date, poster_path, overview){
     this.id = id;
@@ -111,8 +114,33 @@ function getAllMoviesHan(req, res){
     const sql = `SELECT * FROM movieslibrary`;
     clearInterval.query(sql).then(data => {
         return res.status(200).json(data.rows);
-    }) 
+    })
 }
+
+function updatemovieHandler(req, res){
+const id  = req.params.id;
+const movie = req.body;
+
+const sql = `UPDATE movieslibrary SET title=$1, release_date=$2, poster_path=$3 WHER id=${id} RETURNING *;`
+const values = [movie.title, movie.release_date, movie.poster_path];
+
+client.query(sql,values).then(data =>{
+    return res.status(200).json(data.rows);
+}).catch(error =>{
+    errorHandler(error, req, res);
+})
+};
+
+function deletemovieHandler(req, res){
+ const id =req.params.id;
+ const sql = `DELETE FROM movieslibrary WHERE id=${id};`
+
+ client.query(sql).then(() =>{
+     return res.status(204).json([]);
+ }).catch(error => {
+     errorHandler(error, req, res);
+ })
+};
 
 client.connect().then(() =>
 
