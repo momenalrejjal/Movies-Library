@@ -20,7 +20,9 @@ movies-library  a movie app that can check the latest movies based on categories
 4. you can search about what the movie do you want.
 5. showing tv programs.
 6. showing the reviews about movies.
+
 7. adding movies info to library
 8.showing all data about movies where is stored in the database
 9. update a specific movie in the database.
 10. delete  a specific movie from the database.
+
